@@ -38,9 +38,12 @@ function App() {
     setHasAlerted(false);
   };
 
-  const handleResetAlert = () => {
+  const [alertResetKey, setAlertResetKey] = useState(0); // reinicia AlertInput
+
+  const handleResetAlert = (target) => {
     setHasAlerted(false);   // como si nunca se hubiera disparado
     setTarget(null);        // opcional: borra también el objetivo
+    setAlertResetKey(k => k + 1); //fuerza remontaje de AlertInput
   };
 
   // Disparar alerta exactamente una vez cuando seconds === target
@@ -48,7 +51,6 @@ function App() {
     if (target == null) return;
     if (!hasAlerted && seconds === target) {
       setHasAlerted(true);
-      // Notificación simple
       playBeep();
 
     }
@@ -73,7 +75,7 @@ function App() {
       }
 
       {/* Entrada para fijar el objetivo */}
-      <AlertInput onSetTarget={handleSetTarget} />
+      <AlertInput key={alertResetKey}onSetTarget={handleSetTarget} />
 
       {/* Estado de la alerta/objetivo en la UI */}
       {target != null && (
